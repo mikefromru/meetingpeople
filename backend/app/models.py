@@ -43,3 +43,11 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
     if created:
         Token.objects.create(user=instance)
 
+class Like(models.Model):
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    liked_user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='liked_by', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.user} liked {self.liked_user}'
+
