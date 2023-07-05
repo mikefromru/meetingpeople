@@ -12,7 +12,8 @@ class UserListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ('username',)
+        fields = ('id', 'username',)
+        # fields = '__all__'
 
 class LoginSerializer(serializers.Serializer):
     

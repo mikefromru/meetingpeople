@@ -29,10 +29,11 @@ class CustomUser(AbstractUser):
         photo = Image.open(self.avatar.path)
         watermark = Image.open('app/icon.png') 
         width, height = photo.size
-        transparent = Image.new('RGBA', (width, height), (0,0,0,0))
+        transparent = Image.new('RGB', (width, height), (0,0,0,0))
+        # transparent = Image.new('RGBA', (width, height), (0,0,0,0))
         transparent.paste(photo, (0,0))
         transparent.paste(watermark, mask=watermark)
-        transparent.show()
+        # transparent.show()
         transparent.save(self.avatar.path)
 
     def __str__(self):

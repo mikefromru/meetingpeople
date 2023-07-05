@@ -5,13 +5,14 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.conf import settings
 
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import User
 
 from rest_framework import status
-from django.contrib.auth import authenticate, login
 
+from django_filters.rest_framework import DjangoFilterBackend
+# from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.generics import ListAPIView
 from rest_framework.views import APIView
-from django.core.mail import send_mass_mail, send_mail
+from django.core.mail import send_mail
 import environ
 
 env = environ.Env()
@@ -27,7 +28,17 @@ from .models import (
 from .serializers import (
     SignupSerializer,
     LikeSerializer,
+    UserListSerializer,
 )
+
+class SearchView(ListAPIView):
+
+    permission_classes = [IsAuthenticated]
+    queryset = get_user_model().objects.all()
+    serializer_class = UserListSerializer
+    filter_backends = [DjangoFilterBackend] 
+    filterset_fields = ['gender', 'first_name', 'last_name', 'email'] # api/list?gender=M
+    
 
 class LikeView(APIView):
 
@@ -44,24 +55,20 @@ class LikeView(APIView):
         obj_data = {'user': request.user.id, 'liked_user': liked_user}
         serializer = LikeSerializer(data=obj_data)
 
-        # user_2 = get_user_model().objects.get(id=int(request.data.get('liked_user')))
-        # print(user_1.id, user_2, ' <<<<,')
-
         if serializer.is_valid():
 
             # Проверить лайкал юзер другого юзера раньше или нет
-            # if Like.objects.filter(user=request.user.id, liked_user=liked_user).exists():
-            #     return Response({'message': 'it exists already'})
+            if Like.objects.filter(user=request.user.id, liked_user=liked_user).exists():
+                return Response({'message': 'it exists already'})
 
             # Проверить чтобы не лайкал сам себя
             if request.user.id != liked_user:
-                # serializer.save()
+                serializer.save()
                 # Проверить на взаимную симпатию
                 if Like.objects.filter(user=liked_user, liked_user=request.user.id).exists():
                     user_2 = get_user_model().objects.get(id=liked_user)
                     message1 = f'Вы понравились {user_2}! Почта участника: {user_2.email}.'
                     message2 = f'Вы понравились {request.user}! Почта участника: {request.user.email}.'
-                  
                     send_mail('MeetPpl', message1, env('EMAIL_HOST_USER'), [user_2.email])
                     send_mail('MeetPpl', message2, env('EMAIL_HOST_USER'), [request.user.email])
                 return Response(serializer.data)
