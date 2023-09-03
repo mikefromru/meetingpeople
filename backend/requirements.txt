@@ -3,7 +3,9 @@ asttokens==2.3.0
 backcall==0.2.0
 decorator==5.1.1
 Django==4.2.4
+django-cleanup==8.0.0
 django-environ==0.11.2
+django-filter==23.2
 djangorestframework==3.14.0
 executing==1.2.0
 ipython==8.15.0
@@ -12,6 +14,7 @@ matplotlib-inline==0.1.6
 parso==0.8.3
 pexpect==4.8.0
 pickleshare==0.7.5
+Pillow==10.0.0
 prompt-toolkit==3.0.39
 ptyprocess==0.7.0
 pure-eval==0.2.2
