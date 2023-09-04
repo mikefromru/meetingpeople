@@ -36,5 +36,5 @@ python manage.py runserver
 ```
 # Использование
 - Получить список всех пользователей GET `http://0.0.0.0:8000/api/list`
-- Поставить лайк пользователю POST `http:.0.0.0.0:8000/api/clients/like`
+- Поставить лайк пользователю POST `http://0.0.0.0:8000/api/clients/like`
 - Создать пользователя `http://0.0.0.0:8000:api/clients/create` 
