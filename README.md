@@ -14,7 +14,7 @@ https://github.com/mikefromru/meetingpeople.git
 ```
 2. Перейти в папку проекта
 ```
-cd /meetingpeople
+cd meetingpeople
 ```
 3. Создать виртуальное окружение
 ```
